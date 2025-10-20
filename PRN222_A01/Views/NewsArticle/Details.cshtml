@@ -1,0 +1,77 @@
+@model NguyenThanhLong_SE18C.NET_A01.Models.NewsArticle
+
+@{
+    ViewData["Title"] = Model.Headline;
+}
+
+<div class="container">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-action="Index">My Articles</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Article Details</li>
+        </ol>
+    </nav>
+
+    <article>
+        <header class="mb-4">
+            <h1 class="fw-bolder mb-1">@Model.Headline</h1>
+            @if (!string.IsNullOrEmpty(Model.NewsTitle))
+            {
+                <h2 class="fs-5 text-muted mb-2">@Model.NewsTitle</h2>
+            }
+            <div class="text-muted fst-italic mb-2">
+                @if (Model.CreatedDate.HasValue)
+                {
+                    <span>Posted on @Model.CreatedDate.Value.ToString("MMMM dd, yyyy")</span>
+                }
+                @if (Model.CreatedBy != null)
+                {
+                    <span> by @Model.CreatedBy.AccountName</span>
+                }
+            </div>
+            <div class="mb-3">
+                @if (Model.Category != null)
+                {
+                    <span class="badge bg-primary me-1">@Model.Category.CategoryName</span>
+                }
+                @foreach (var tag in Model.NewsTags)
+                {
+                    <span class="badge bg-secondary me-1">@tag.Tag.TagName</span>
+                }
+                @if (Model.NewsStatus == true)
+                {
+                    <span class="badge bg-success">Active</span>
+                }
+                else
+                {
+                    <span class="badge bg-danger">Inactive</span>
+                }
+            </div>
+        </header>
+
+        <section class="mb-5">
+            <div class="card">
+                <div class="card-body">
+                    @if (!string.IsNullOrEmpty(Model.NewsContent))
+                    {
+                        <p class="fs-5 mb-4" style="white-space: pre-line;">@Model.NewsContent</p>
+                    }
+                    
+                    @if (!string.IsNullOrEmpty(Model.NewsSource))
+                    {
+                        <p class="text-muted"><strong>Source:</strong> @Model.NewsSource</p>
+                    }
+                    
+                    @if (Model.ModifiedDate.HasValue)
+                    {
+                        <p class="text-muted"><strong>Last Modified:</strong> @Model.ModifiedDate.Value.ToString("MMMM dd, yyyy HH:mm")</p>
+                    }
+                </div>
+            </div>
+        </section>
+    </article>
+
+    <div class="mb-4">
+        <a asp-action="Index" class="btn btn-secondary">Back to My Articles</a>
+    </div>
+</div>

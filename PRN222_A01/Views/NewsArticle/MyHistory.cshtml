@@ -1,0 +1,50 @@
+@model IEnumerable<NguyenThanhLong_SE18C.NET_A01.Models.NewsArticle>
+
+@{
+    ViewData["Title"] = "My Article History";
+}
+
+<h2>My Article History</h2>
+
+<p class="lead">View all articles you have created.</p>
+
+<table class="table table-striped table-hover">
+    <thead>
+        <tr>
+            <th>Article ID</th>
+            <th>Headline</th>
+            <th>Title</th>
+            <th>Category</th>
+            <th>Status</th>
+            <th>Created Date</th>
+            <th>Modified Date</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var article in Model)
+        {
+            <tr>
+                <td>@article.NewsArticleID</td>
+                <td>@article.Headline</td>
+                <td>@article.NewsTitle</td>
+                <td>@(article.Category?.CategoryName ?? "N/A")</td>
+                <td>
+                    @if (article.NewsStatus == true)
+                    {
+                        <span class="badge bg-success">Active</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-secondary">Inactive</span>
+                    }
+                </td>
+                <td>@(article.CreatedDate?.ToString("MMM dd, yyyy") ?? "N/A")</td>
+                <td>@(article.ModifiedDate?.ToString("MMM dd, yyyy") ?? "N/A")</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@article.NewsArticleID" class="btn btn-sm btn-info">View</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

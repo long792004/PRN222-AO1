@@ -1,0 +1,107 @@
+@model NguyenThanhLong_SE18C.NET_A01.Models.NewsArticle
+
+@{
+    bool isEdit = !string.IsNullOrEmpty(Model.NewsArticleID);
+    var title = isEdit ? "Edit News Article" : "Create News Article";
+    var categories = ViewBag.Categories as SelectList;
+    var tags = ViewBag.Tags as List<NguyenThanhLong_SE18C.NET_A01.Models.Tag>;
+    var selectedTags = ViewBag.SelectedTags as List<int> ?? new List<int>();
+}
+
+<div class="modal-header">
+    <h5 class="modal-title">@title</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+
+<form id="newsArticleForm" method="post" asp-action="@(isEdit ? "Edit" : "Create")">
+    <div class="modal-body">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        
+        <div class="mb-3">
+            <label asp-for="NewsArticleID" class="form-label"></label>
+            @if (isEdit)
+            {
+                <input asp-for="NewsArticleID" class="form-control" readonly />
+            }
+            else
+            {
+                <input asp-for="NewsArticleID" class="form-control" />
+            }
+            <span asp-validation-for="NewsArticleID" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="NewsTitle" class="form-label"></label>
+            <input asp-for="NewsTitle" class="form-control" />
+            <span asp-validation-for="NewsTitle" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Headline" class="form-label"></label>
+            <input asp-for="Headline" class="form-control" />
+            <span asp-validation-for="Headline" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="NewsContent" class="form-label"></label>
+            <textarea asp-for="NewsContent" class="form-control" rows="5"></textarea>
+            <span asp-validation-for="NewsContent" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="NewsSource" class="form-label"></label>
+            <input asp-for="NewsSource" class="form-control" />
+            <span asp-validation-for="NewsSource" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="CategoryID" class="form-label"></label>
+            <select asp-for="CategoryID" class="form-control" asp-items="categories">
+                <option value="">Select Category</option>
+            </select>
+            <span asp-validation-for="CategoryID" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Tags</label>
+            <div class="row">
+                @if (tags != null)
+                {
+                    @foreach (var tag in tags)
+                    {
+                        <div class="col-md-6">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="selectedTags" value="@tag.TagID" 
+                                       @(selectedTags.Contains(tag.TagID) ? "checked" : "") />
+                                <label class="form-check-label">
+                                    @tag.TagName
+                                </label>
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <div class="form-check">
+                <input asp-for="NewsStatus" class="form-check-input" type="checkbox" />
+                <label asp-for="NewsStatus" class="form-check-label"></label>
+            </div>
+        </div>
+
+        @if (isEdit)
+        {
+            <input type="hidden" asp-for="CreatedDate" />
+            <input type="hidden" asp-for="CreatedByID" />
+        }
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">Save</button>
+    </div>
+</form>
+
+<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>

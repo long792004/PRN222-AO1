@@ -1,0 +1,124 @@
+@model NguyenThanhLong_SE18C.NET_A01.Models.NewsArticle
+
+@{
+    ViewData["Title"] = Model.Headline;
+}
+
+<style>
+    .article-header h1 {
+        font-weight: 700;
+        color: #0d6efd;
+    }
+
+    .article-header h2 {
+        font-size: 1.1rem;
+        color: #6c757d;
+    }
+
+    .article-meta {
+        font-size: 0.95rem;
+        color: #6c757d;
+    }
+
+    .article-meta span {
+        margin-right: 8px;
+    }
+
+    .badge {
+        font-size: 0.85rem;
+        padding: 0.45em 0.6em;
+        border-radius: 0.5rem;
+    }
+
+    .card {
+        border: none;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        border-radius: 1rem;
+    }
+
+    .card-body {
+        font-size: 1.05rem;
+        line-height: 1.7;
+    }
+
+    .card-body p {
+        margin-bottom: 1.25rem;
+    }
+
+    .btn-secondary {
+        transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    .btn-secondary:hover {
+        background-color: #0d6efd;
+        color: #fff;
+        transform: translateY(-2px);
+    }
+
+    .breadcrumb {
+        background: none;
+        padding-left: 0;
+    }
+</style>
+
+<div class="container py-5">
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-action="Index">News</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Article Details</li>
+        </ol>
+    </nav>
+
+    <article>
+        <header class="article-header mb-4">
+            <h1 class="mb-2">@Model.Headline</h1>
+
+            @if (!string.IsNullOrEmpty(Model.NewsTitle))
+            {
+                <h2 class="mb-3">@Model.NewsTitle</h2>
+            }
+
+            <div class="article-meta mb-3">
+                @if (Model.CreatedDate.HasValue)
+                {
+                    <span>?? @Model.CreatedDate.Value.ToString("MMMM dd, yyyy")</span>
+                }
+                @if (Model.CreatedBy != null)
+                {
+                    <span>?? by @Model.CreatedBy.AccountName</span>
+                }
+            </div>
+
+            <div class="mb-3">
+                @if (Model.Category != null)
+                {
+                    <span class="badge bg-primary me-1">@Model.Category.CategoryName</span>
+                }
+                @foreach (var tag in Model.NewsTags)
+                {
+                    <span class="badge bg-secondary me-1">@tag.Tag.TagName</span>
+                }
+            </div>
+        </header>
+
+        <section class="mb-5">
+            <div class="card p-4">
+                <div class="card-body">
+                    @if (!string.IsNullOrEmpty(Model.NewsContent))
+                    {
+                        <p style="white-space: pre-line;">@Model.NewsContent</p>
+                    }
+
+                    @if (!string.IsNullOrEmpty(Model.NewsSource))
+                    {
+                        <p class="text-muted mt-4"><strong>Source:</strong> @Model.NewsSource</p>
+                    }
+                </div>
+            </div>
+        </section>
+    </article>
+
+    <div class="mt-4">
+        <a asp-action="Index" class="btn btn-secondary px-4 rounded-pill">? Back to News</a>
+    </div>
+</div>

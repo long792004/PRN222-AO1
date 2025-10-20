@@ -1,0 +1,71 @@
+@model NguyenThanhLong_SE18C.NET_A01.Models.SystemAccount
+
+@{
+    bool isEdit = Model.AccountID != 0;
+    var title = isEdit ? "Edit Account" : "Create Account";
+}
+
+<div class="modal-header">
+    <h5 class="modal-title">@title</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+
+<form id="accountForm" method="post" asp-action="@(isEdit ? "Edit" : "Create")">
+    <div class="modal-body">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        
+        @if (isEdit)
+        {
+            <input type="hidden" asp-for="AccountID" />
+        }
+        
+        <div class="mb-3">
+            <label asp-for="AccountID" class="form-label"></label>
+            @if (isEdit)
+            {
+                <input asp-for="AccountID" class="form-control" readonly />
+            }
+            else
+            {
+                <input asp-for="AccountID" class="form-control" />
+            }
+            <span asp-validation-for="AccountID" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="AccountName" class="form-label"></label>
+            <input asp-for="AccountName" class="form-control" />
+            <span asp-validation-for="AccountName" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="AccountEmail" class="form-label"></label>
+            <input asp-for="AccountEmail" class="form-control" type="email" />
+            <span asp-validation-for="AccountEmail" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="AccountPassword" class="form-label"></label>
+            <input asp-for="AccountPassword" class="form-control" type="password" />
+            <span asp-validation-for="AccountPassword" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="AccountRole" class="form-label"></label>
+            <select asp-for="AccountRole" class="form-control">
+                <option value="">Select Role</option>
+                <option value="1">Staff</option>
+                <option value="2">Lecturer</option>
+            </select>
+            <span asp-validation-for="AccountRole" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">Save</button>
+    </div>
+</form>
+
+<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
